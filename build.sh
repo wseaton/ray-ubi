@@ -39,12 +39,29 @@ podman build --no-cache -t ${REGISTRY}/ray-ubi:${RAY_UBI_TAG} \
        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
        ./images/ray-ubi
 
+podman push ${REGISTRY}/ray-ubi:${RAY_UBI_TAG}
+
 podman build --no-cache -t ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG} \
        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       --build-arg RAY_VERSION=${RAY_VERSION} \
+       --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
        ./images/ray-operator-ubi
 
 podman build --no-cache -t ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG} \
        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       --build-arg RAY_VERSION=${RAY_VERSION} \
+       --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
        ./images/ray-ml-ubi
+
+
+podman push ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG}
+podman push ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG}
+podman push ${REGISTRY}/ray-ubi:${RAY_UBI_TAG}
+podman push ${REGISTRY}/ray-ml-notebook:${RAY_UBI_TAG}
+
+oc tag ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG} ray-operator-ubi:${RAY_UBI_TAG} -n edaodh-uat
+oc tag ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG} ray-ml-ubi:${RAY_UBI_TAG} -n edaodh-uat    
+oc tag ${REGISTRY}/ray-ubi:${RAY_UBI_TAG} ray-ubi:${RAY_UBI_TAG} -n edaodh-uat    
+oc tag ${REGISTRY}/ray-ml-notebook:${RAY_UBI_TAG} ray-ml-notebook:${RAY_UBI_TAG} -n edaodh-uat    
+
+sleep 10
+
+oc tag ray-ml-notebook:${RAY_UBI_TAG} ray-ml-notebook:demo -n edaodh-uat    

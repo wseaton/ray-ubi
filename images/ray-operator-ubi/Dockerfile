@@ -3,8 +3,9 @@
 ARG PY_MAJOR
 ARG PY_MINOR
 ARG RAY_VERSION
+ARG REGISTRY
 
-FROM quay.io/erikerlandson/ray-ubi:py-${PY_MAJOR}.${PY_MINOR}-ray-${RAY_VERSION}
+FROM ${REGISTRY}/ray-ubi:py-${PY_MAJOR}.${PY_MINOR}-ray-${RAY_VERSION}
 
 USER root:0
 
