@@ -29,39 +29,39 @@ export REGISTRY=$4
 # ray cares about keeping major+minor python aligned so it is important to tag it that way
 export RAY_UBI_TAG="py-${PY_MAJOR}.${PY_MINOR}-ray-${RAY_VERSION}"
 
-cat images/ray-ml-notebook/requirements.txt.template | sed s/RAY_VERSION/${RAY_VERSION}/ > images/ray-ml-notebook/requirements.txt
-podman build --no-cache -t ${REGISTRY}/ray-ml-notebook:${RAY_UBI_TAG} \
-       --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       ./images/ray-ml-notebook
+# cat images/ray-ml-notebook/requirements.txt.template | sed s/RAY_VERSION/${RAY_VERSION}/ > images/ray-ml-notebook/requirements.txt
+# podman build --no-cache -t ${REGISTRY}/ray-modin-notebook:${RAY_UBI_TAG} \
+#        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
+#        ./images/ray-ml-notebook
 
-cat images/ray-ubi/requirements.txt.template | sed s/RAY_VERSION/${RAY_VERSION}/ > images/ray-ubi/requirements.txt
-podman build --no-cache -t ${REGISTRY}/ray-ubi:${RAY_UBI_TAG} \
-       --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       ./images/ray-ubi
+# cat images/ray-ubi/requirements.txt.template | sed s/RAY_VERSION/${RAY_VERSION}/ > images/ray-ubi/requirements.txt
+# podman build --no-cache -t ${REGISTRY}/ray-ubi:${RAY_UBI_TAG} \
+#        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
+#        ./images/ray-ubi
 
-podman push ${REGISTRY}/ray-ubi:${RAY_UBI_TAG}
+# podman push ${REGISTRY}/ray-ubi:${RAY_UBI_TAG}
 
-podman build --no-cache -t ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG} \
-       --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
-       ./images/ray-operator-ubi
+# podman build --no-cache -t ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG} \
+#        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
+#        --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
+#        ./images/ray-operator-ubi
 
-podman build --no-cache -t ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG} \
-       --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
-       --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
-       ./images/ray-ml-ubi
+# podman build --no-cache -t ${REGISTRY}/ray-modin-ubi:${RAY_UBI_TAG} \
+#        --build-arg PY_MAJOR=${PY_MAJOR} --build-arg PY_MINOR=${PY_MINOR} \
+#        --build-arg RAY_VERSION=${RAY_VERSION} --build-arg REGISTRY=${REGISTRY} \
+#        ./images/ray-ml-ubi
 
 
 podman push ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG}
-podman push ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG}
+podman push ${REGISTRY}/ray-modin-ubi:${RAY_UBI_TAG}
 podman push ${REGISTRY}/ray-ubi:${RAY_UBI_TAG}
-podman push ${REGISTRY}/ray-ml-notebook:${RAY_UBI_TAG}
+podman push ${REGISTRY}/ray-modin-notebook:${RAY_UBI_TAG}
 
 oc tag ${REGISTRY}/ray-operator-ubi:${RAY_UBI_TAG} ray-operator-ubi:${RAY_UBI_TAG} -n edaodh-uat
-oc tag ${REGISTRY}/ray-ml-ubi:${RAY_UBI_TAG} ray-ml-ubi:${RAY_UBI_TAG} -n edaodh-uat    
+oc tag ${REGISTRY}/ray-modin-ubi:${RAY_UBI_TAG} ray-modin-ubi:${RAY_UBI_TAG} -n edaodh-uat    
 oc tag ${REGISTRY}/ray-ubi:${RAY_UBI_TAG} ray-ubi:${RAY_UBI_TAG} -n edaodh-uat    
-oc tag ${REGISTRY}/ray-ml-notebook:${RAY_UBI_TAG} ray-ml-notebook:${RAY_UBI_TAG} -n edaodh-uat    
+oc tag ${REGISTRY}/ray-modin-notebook:${RAY_UBI_TAG} ray-modin-notebook:${RAY_UBI_TAG} -n edaodh-uat    
 
 sleep 10
 
-oc tag ray-ml-notebook:${RAY_UBI_TAG} ray-ml-notebook:demo -n edaodh-uat    
+oc tag ray-modin-notebook:${RAY_UBI_TAG} ray-modin-notebook:demo -n edaodh-uat    

@@ -1,9 +1,7 @@
 # keep this in sync with ray-ml-notebook
 
-pandas==1.1.4
+pandas==1.3.0
 dask[array,dataframe]==2021.7.0
-# modin[ray]
-
+modin[ray]
+connectorx==0.2.0a3
 s3fs==2021.7.0
-
-raydp-nightly==2021.7.1.dev0
